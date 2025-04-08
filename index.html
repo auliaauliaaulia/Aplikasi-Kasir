@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kasir Kedai</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    select, input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .reset-btn {
+      background-color: #f44336;
+    }
+
+    .reset-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    #total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 15px;
+      text-align: right;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Kasir Kedai</h2>
+    <div class="input-group">
+      <select id="nama" onchange="setHarga()">
+        <option value="">Pilih Barang</option>
+      </select>
+      <input type="number" id="harga" placeholder="Harga" readonly>
+      <input type="number" id="jumlah" placeholder="Jumlah">
+    </div>
+    <button onclick="tambahBarang()">Tambah</button>
+    <button class="reset-btn" onclick="resetSemua()">Reset</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Harga</th>
+          <th>Jumlah</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="isiTabel"></tbody>
+    </table>
+
+    <div id="total">Total Belanja: Rp 0</div>
+  </div>
+
+  <script>
+    const hargaBarang = {
+      "Sari Gandum": 2000, "Oreo": 2000, "Beng beng": 2000, "Nextar": 2000,
+      "Slai O'lai": 2000, "Lotte Chocopie": 3500, "Lite": 5000, "Piatos": 5000,
+      "Lays": 5000, "Boncabe": 5000, "PotaBee": 500, "Better": 2000,
+      "Good Time": 2000, "Taro": 5000, "French Fries": 5000, "Qtela": 6000,
+      "Chocolatos": 500, "Nabati": 500, "Dilan": 2000, "Astor": 1000,
+      "Tic tic": 2000, "Fruit Tea": 4000, "Cimory": 6500, "Ultramilk": 5000,
+      "Milku": 3500, "Teh kotak": 3500, "Teh pucuk": 3500, "Lee mineral": 3000,
+      "Aqua": 3000, "Ceystaline": 3000, "Nestle Pure Life": 4000,
+      "Golda": 3500, "Good day": 5000, "Nescafe": 7000, "Coca cola": 4500,
+      "Sprite": 4500, "Eskrim Paddle Pop": 3000, "Eskrim Waku waku": 2000,
+      "Eskrim Cornetto": 5000, "Eskrim Walls": 6000
+    };
+
+    const selectBarang = document.getElementById("nama");
+    Object.keys(hargaBarang).forEach(nama => {
+      const option = document.createElement("option");
+      option.value = nama;
+      option.textContent = nama;
+      selectBarang.appendChild(option);
+    });
+
+    let totalBelanja = 0;
+
+    function setHarga() {
+      const nama = document.getElementById("nama").value;
+      document.getElementById("harga").value = hargaBarang[nama] || 0;
+    }
+
+    function tambahBarang() {
+      const nama = document.getElementById("nama").value;
+      const harga = parseInt(document.getElementById("harga").value);
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+
+      if (!nama || !harga || !jumlah) {
+        alert("Lengkapi semua data!");
+        return;
+      }
+
+      const total = harga * jumlah;
+      totalBelanja += total;
+
+      const tabel = document.getElementById("isiTabel");
+      const row = `<tr>
+        <td>${nama}</td>
+        <td>Rp ${harga}</td>
+        <td>${jumlah}</td>
+        <td>Rp ${total}</td>
+      </tr>`;
+      tabel.innerHTML += row;
+
+      document.getElementById("total").innerText = Total Belanja: Rp ${totalBelanja};
+      document.getElementById("jumlah").value = "";
+    }
+
+    function resetSemua() {
+      document.getElementById("isiTabel").innerHTML = "";
+      totalBelanja = 0;
+      document.getElementById("total").innerText = "Total Belanja: Rp 0";
+      document.getElementById("nama").value = "";
+      document.getElementById("harga").value = "";
+      document.getElementById("jumlah").value = "";
+    }
+  </script>
+</body>
+</html>
